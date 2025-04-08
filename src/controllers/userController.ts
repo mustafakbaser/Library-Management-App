@@ -48,16 +48,41 @@ export class UserController {
     try {
       const userId = parseInt(req.params.userId);
       const bookId = parseInt(req.params.bookId);
+      
+      if (isNaN(userId) || isNaN(bookId)) {
+        return res.status(400).json({ 
+          error: 'Geçersiz ID formatı',
+          details: 'Kullanıcı ID ve Kitap ID sayısal değer olmalıdır'
+        });
+      }
+
       await userService.borrowBook(userId, bookId);
-      res.status(204).send();
+      res.status(200).json({ 
+        message: 'Kitap başarıyla ödünç alındı',
+        data: {
+          userId,
+          bookId,
+          status: 'borrowed'
+        }
+      });
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === 'Kullanıcı veya kitap bulunamadı') {
-          res.status(404).json({ error: error.message });
+          res.status(404).json({ 
+            error: 'Kaynak bulunamadı',
+            details: error.message 
+          });
         } else if (error.message === 'Bu kitap zaten ödünç alınmış') {
-          res.status(400).json({ error: error.message });
+          res.status(400).json({ 
+            error: 'İşlem başarısız',
+            details: error.message 
+          });
         } else {
-          res.status(500).json({ error: 'Kitap ödünç alınırken bir hata oluştu' });
+          console.error('Borrow book error:', error);
+          res.status(500).json({ 
+            error: 'Sunucu hatası',
+            details: 'Kitap ödünç alınırken bir hata oluştu'
+          });
         }
       }
     }
@@ -68,14 +93,51 @@ export class UserController {
       const userId = parseInt(req.params.userId);
       const bookId = parseInt(req.params.bookId);
       const { score } = req.body;
+      
+      if (isNaN(userId) || isNaN(bookId)) {
+        return res.status(400).json({ 
+          error: 'Geçersiz ID formatı',
+          details: 'Kullanıcı ID ve Kitap ID sayısal değer olmalıdır'
+        });
+      }
+
+      if (!score || isNaN(score)) {
+        return res.status(400).json({ 
+          error: 'Geçersiz puan',
+          details: 'Puan sayısal bir değer olmalıdır'
+        });
+      }
+
+      if (score < 1 || score > 5) {
+        return res.status(400).json({ 
+          error: 'Geçersiz puan aralığı',
+          details: 'Puan 1 ile 5 arasında olmalıdır'
+        });
+      }
+
       await userService.returnBook(userId, bookId, score);
-      res.status(204).send();
+      res.status(200).json({ 
+        message: 'Kitap başarıyla iade edildi',
+        data: {
+          userId,
+          bookId,
+          rating: score,
+          status: 'returned'
+        }
+      });
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === 'Ödünç alınmış kitap bulunamadı') {
-          res.status(404).json({ error: error.message });
+          res.status(404).json({ 
+            error: 'Kaynak bulunamadı',
+            details: error.message 
+          });
         } else {
-          res.status(500).json({ error: 'Kitap iade edilirken bir hata oluştu' });
+          console.error('Return book error:', error);
+          res.status(500).json({ 
+            error: 'Sunucu hatası',
+            details: 'Kitap iade edilirken bir hata oluştu'
+          });
         }
       }
     }

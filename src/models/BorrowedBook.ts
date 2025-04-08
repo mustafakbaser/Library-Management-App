@@ -89,6 +89,15 @@ BorrowedBook.init(
     tableName: 'borrowed_books',
     timestamps: false,
     underscored: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ['user_id', 'book_id', 'is_returned'],
+        where: {
+          is_returned: false
+        }
+      }
+    ]
   }
 );
 

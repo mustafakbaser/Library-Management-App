@@ -29,9 +29,11 @@ CREATE TABLE IF NOT EXISTS borrowed_books (
     borrow_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     return_date TIMESTAMP,
     is_returned BOOLEAN DEFAULT FALSE,
-    rating INTEGER CHECK (rating >= 1 AND rating <= 5),
-    CONSTRAINT unique_active_borrow UNIQUE (user_id, book_id, is_returned)
+    rating INTEGER CHECK (rating >= 1 AND rating <= 5)
 );
+
+-- UNIQUE CONSTRAINT FOR ACTIVE BORROWS
+CREATE UNIQUE INDEX unique_active_borrow ON borrowed_books (user_id, book_id) WHERE is_returned = false;
 
 -- INDEXES FOR PERFORMANCE
 CREATE INDEX IF NOT EXISTS idx_borrowed_books_user_id ON borrowed_books(user_id);
