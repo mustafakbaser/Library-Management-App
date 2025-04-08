@@ -87,7 +87,7 @@ BorrowedBook.init(
   {
     sequelize,
     tableName: 'borrowed_books',
-    timestamps: true,
+    timestamps: false,
     underscored: true,
   }
 );

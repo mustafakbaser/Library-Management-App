@@ -76,7 +76,7 @@ Book.init(
   {
     sequelize,
     tableName: 'books',
-    timestamps: true,
+    timestamps: false,
     underscored: true,
   }
 );

@@ -43,14 +43,14 @@ export class BookService {
     };
   }
 
-  async createBook(title: string) {
+  async createBook(title: string, author?: string, isbn?: string, publishedYear?: number, genre?: string) {
     const book = await Book.create({
       title,
       viewCount: 0,
-      author: '',
-      isbn: '',
-      publishedYear: new Date().getFullYear(),
-      genre: '',
+      author: author || '',
+      isbn: isbn || '',
+      publishedYear: publishedYear || new Date().getFullYear(),
+      genre: genre || '',
     });
 
     return book;

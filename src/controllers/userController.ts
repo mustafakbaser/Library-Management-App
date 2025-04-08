@@ -32,10 +32,14 @@ export class UserController {
 
   async createUser(req: Request, res: Response) {
     try {
-      const { name } = req.body;
-      const user = await userService.createUser(name);
+      console.log('Request Body:', req.body);
+      const { fullName, email, passwordHash } = req.body;
+      console.log('Parsed fields:', { fullName, email, passwordHash });
+      const user = await userService.createUser(fullName, email, passwordHash);
+      console.log('User created:', user);
       res.status(201).send();
     } catch (error) {
+      console.error('Create user error:', error);
       res.status(500).json({ error: 'Kullanıcı oluşturulurken bir hata oluştu' });
     }
   }

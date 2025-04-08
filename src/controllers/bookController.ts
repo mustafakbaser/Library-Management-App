@@ -32,8 +32,8 @@ export class BookController {
 
   async createBook(req: Request, res: Response) {
     try {
-      const { name } = req.body;
-      await bookService.createBook(name);
+      const { title, author, isbn, publishedYear, genre } = req.body;
+      await bookService.createBook(title, author, isbn, publishedYear, genre);
       res.status(201).send();
     } catch (error) {
       res.status(500).json({ error: 'Kitap oluşturulurken bir hata oluştu' });

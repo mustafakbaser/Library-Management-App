@@ -69,11 +69,11 @@ export class UserService {
     };
   }
 
-  async createUser(fullName: string) {
+  async createUser(fullName: string, email: string, passwordHash: string) {
     const user = await User.create({
       fullName,
-      email: `${fullName.toLowerCase().replace(/\s+/g, '.')}@example.com`,
-      passwordHash: 'default-password', // Gerçek uygulamada bu değer kullanıcı tarafından belirlenmelidir
+      email,
+      passwordHash,
     });
 
     return user;
