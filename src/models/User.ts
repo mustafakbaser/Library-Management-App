@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
 import bcrypt from 'bcryptjs';
+import BorrowedBook from './BorrowedBook';
 
 interface UserAttributes {
   id: number;
@@ -10,7 +11,9 @@ interface UserAttributes {
   createdAt: Date;
 }
 
-class User extends Model<UserAttributes> implements UserAttributes {
+interface UserCreationAttributes extends Omit<UserAttributes, 'id' | 'createdAt'> {}
+
+class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
   public fullName!: string;
   public email!: string;
@@ -19,6 +22,10 @@ class User extends Model<UserAttributes> implements UserAttributes {
 
   // Timestamps
   public readonly updatedAt!: Date;
+
+  // Associations
+  public readonly borrowedBooks?: BorrowedBook[];
+  public readonly currentBorrows?: BorrowedBook[];
 }
 
 User.init(

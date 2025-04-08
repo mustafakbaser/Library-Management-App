@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database';
+import BorrowedBook from './BorrowedBook';
 
 interface BookAttributes {
   id: number;
@@ -12,7 +13,9 @@ interface BookAttributes {
   createdAt: Date;
 }
 
-class Book extends Model<BookAttributes> implements BookAttributes {
+interface BookCreationAttributes extends Omit<BookAttributes, 'id' | 'createdAt'> {}
+
+class Book extends Model<BookAttributes, BookCreationAttributes> implements BookAttributes {
   public id!: number;
   public title!: string;
   public author!: string;
@@ -24,6 +27,9 @@ class Book extends Model<BookAttributes> implements BookAttributes {
 
   // Timestamps
   public readonly updatedAt!: Date;
+
+  // Associations
+  public readonly borrowedBooks?: BorrowedBook[];
 }
 
 Book.init(

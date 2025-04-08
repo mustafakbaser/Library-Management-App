@@ -13,7 +13,9 @@ interface BorrowedBookAttributes {
   rating: number | null;
 }
 
-class BorrowedBook extends Model<BorrowedBookAttributes> implements BorrowedBookAttributes {
+interface BorrowedBookCreationAttributes extends Omit<BorrowedBookAttributes, 'id' | 'borrowDate'> {}
+
+class BorrowedBook extends Model<BorrowedBookAttributes, BorrowedBookCreationAttributes> implements BorrowedBookAttributes {
   public id!: number;
   public userId!: number;
   public bookId!: number;
@@ -89,16 +91,5 @@ BorrowedBook.init(
     underscored: true,
   }
 );
-
-// Define associations
-BorrowedBook.belongsTo(User, {
-  foreignKey: 'userId',
-  as: 'user',
-});
-
-BorrowedBook.belongsTo(Book, {
-  foreignKey: 'bookId',
-  as: 'book',
-});
 
 export default BorrowedBook; 
