@@ -23,6 +23,7 @@ export class BookService {
             },
           },
           attributes: ['rating'],
+          required: false
         },
       ],
     });
@@ -32,14 +33,14 @@ export class BookService {
     }
 
     const ratings = book.borrowedBooks?.map((borrow: BorrowedBook) => borrow.rating).filter((rating): rating is number => rating !== null) || [];
-    const averageScore = ratings.length > 0
+    const averageRating = ratings.length > 0
       ? (ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length).toFixed(2)
-      : -1;
+      : "0.00";
 
     return {
       id: book.id,
       name: book.title,
-      score: averageScore,
+      rating: averageRating,
     };
   }
 

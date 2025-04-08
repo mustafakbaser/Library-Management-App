@@ -8,6 +8,14 @@ User.hasMany(BorrowedBook, {
   as: 'borrowedBooks',
 });
 
+User.hasMany(BorrowedBook, {
+  foreignKey: 'userId',
+  as: 'currentBorrows',
+  scope: {
+    isReturned: false
+  }
+});
+
 // Book - BorrowedBook associations
 Book.hasMany(BorrowedBook, {
   foreignKey: 'bookId',

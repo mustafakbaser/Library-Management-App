@@ -27,6 +27,7 @@ export class UserService {
             isReturned: true,
           },
           attributes: ['rating'],
+          required: false
         },
         {
           model: BorrowedBook,
@@ -38,10 +39,8 @@ export class UserService {
               attributes: ['title'],
             },
           ],
-          where: {
-            isReturned: false,
-          },
           attributes: [],
+          required: false
         },
       ],
     });
