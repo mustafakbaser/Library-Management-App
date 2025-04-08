@@ -39,7 +39,7 @@ export class UserService {
               attributes: ['title'],
             },
           ],
-          attributes: [],
+          attributes: ['id', 'borrowDate'],
           required: false
         },
       ],
@@ -75,7 +75,13 @@ export class UserService {
       passwordHash,
     });
 
-    return user;
+    return {
+      id: user.id,
+      fullName: user.fullName,
+      email: user.email,
+      createdAt: user.createdAt,
+      message: 'Kullanıcı başarıyla oluşturuldu'
+    };
   }
 
   async borrowBook(userId: number, bookId: number) {
